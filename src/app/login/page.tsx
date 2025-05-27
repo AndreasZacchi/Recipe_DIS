@@ -31,7 +31,7 @@ export default async function Login() {
           sameSite: "lax",
           path: "/",
         });
-        redirect("/home");
+        redirect("/dashboard");
       }
     }
   }
