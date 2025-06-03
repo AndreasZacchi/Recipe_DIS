@@ -4,7 +4,12 @@ import FavoriteButton from "./favoriteButton";
 
 export default async function RecipePage({ params }: { params: { recipeID: string } }) {
   const { recipeID } = params;
-  const userID = await getUserID(); // (only needed if you want to ensure a user is logged in; otherwise you can omit)
+  let userID: string | null;
+  try {
+    userID = await getUserID();
+  } catch {
+    userID = null;
+  }
   const recipe = await getRecipe(recipeID);
 
   if (!recipe) {
@@ -12,7 +17,13 @@ export default async function RecipePage({ params }: { params: { recipeID: strin
   }
 
   // Fetch “initial” favorite status on the server
-  const isFavorited = await checkFavorite(recipeID);
+  let isFavorited = false;
+  try {
+    isFavorited = await checkFavorite(recipeID);
+  } catch {
+    isFavorited = false;
+  }
+  
 
   return (
     <div className="max-w-3xl mx-auto py-8 px-4 bg-white rounded shadow-lg">
@@ -37,9 +48,11 @@ export default async function RecipePage({ params }: { params: { recipeID: strin
           <h2 className="text-2xl font-semibold mb-2">Servings</h2>
           <p className="text-gray-600">{recipe.servings}</p>
         </div>
-        <div>
-          <FavoriteButton recipeID={recipeID} initialFavoriteStatus={isFavorited} />
-        </div>
+        {userID != null && (
+          <div>
+            <FavoriteButton recipeID={recipeID} initialFavoriteStatus={isFavorited} />
+          </div>
+        )}
       </div>
 
       <div className="mb-6">

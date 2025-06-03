@@ -4,9 +4,9 @@ import { cookies } from "next/headers";
 const db = postgres({
   host: "localhost",
   port: 5432,
-  database: "postgres",
-  username: "andreaszacchi",
-  password: "admin",
+  database: "recipes",
+  username: "christofferharboandersen",
+  password: "",
 });
 
 // const db = postgres({
