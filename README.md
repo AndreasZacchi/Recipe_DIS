@@ -37,9 +37,9 @@ npm run dev
 ```
 
 ## Deliverable requirements 
-Please see db.ts for all database code. 
-It is not very clear but we use regex in the following (when searching for recipes) 
-``` recipes = await db.unsafe("SELECT * from recipes WHERE name ~* $1", [searchParam]) ```
-
-## E/R diagram
+Please see db.ts for all database code. <br />
+It is not very clear but we use regex in the following (when searching for recipes): 
+```
+recipes = await db.unsafe("SELECT * from recipes WHERE name ~* $1", [searchParam])
+```
 The E/R diagram is uploaded here in this repo.
