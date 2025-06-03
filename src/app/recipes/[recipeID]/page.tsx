@@ -1,15 +1,23 @@
-import { getRecipe } from "@/app/db";
 import Image from "next/image";
+import { getRecipe, checkFavorite, getUserID } from "@/app/db";
+import FavoriteButton from "./favoriteButton";
 
-export default async function Recipe({ params }: { params: Promise<{ recipeID: string }> }) {
-  const { recipeID } = await params;
+export default async function RecipePage({ params }: { params: { recipeID: string } }) {
+  const { recipeID } = params;
+  const userID = await getUserID(); // (only needed if you want to ensure a user is logged in; otherwise you can omit)
   const recipe = await getRecipe(recipeID);
+
   if (!recipe) {
     return <div>Recipe not found</div>;
   }
+
+  // Fetch “initial” favorite status on the server
+  const isFavorited = await checkFavorite(recipeID);
+
   return (
     <div className="max-w-3xl mx-auto py-8 px-4 bg-white rounded shadow-lg">
       <h1 className="text-3xl font-bold mb-4">{recipe.name}</h1>
+
       <div className="flex justify-center mb-6">
         <Image
           className="rounded"
@@ -28,6 +36,9 @@ export default async function Recipe({ params }: { params: Promise<{ recipeID: s
         <div>
           <h2 className="text-2xl font-semibold mb-2">Servings</h2>
           <p className="text-gray-600">{recipe.servings}</p>
+        </div>
+        <div>
+          <FavoriteButton recipeID={recipeID} initialFavoriteStatus={isFavorited} />
         </div>
       </div>
 

@@ -3,9 +3,8 @@ import Image from "next/image";
 import { getRecipes } from "./db";
 
 export default async function Home({ searchParams }: { searchParams: { query?: string } }) {
-  const query = searchParams.query || undefined;
+  const query = (await searchParams).query || undefined;
   const recipes = await getRecipes(query);
-  console.log("Recipes fetched:", recipes);
 
   return (
     <>
@@ -13,7 +12,7 @@ export default async function Home({ searchParams }: { searchParams: { query?: s
         <div className="flex flex-col w-1/2">
           <p className="mt-4">Your one-stop solution for all your recipe needs.</p>
         </div>
-        <form method="get" className="flex items-center mt-4 mb-6">
+        <form method="get" className="flex items-center mt-4 mb-6 ml-2">
           <input
             type="text"
             name="query"
@@ -23,9 +22,14 @@ export default async function Home({ searchParams }: { searchParams: { query?: s
           />
           <button
             type="submit"
-            className="px-4 py-2 bg-blue-500 text-white rounded-r hover:bg-blue-600">
+            className="px-4 py-2 bg-blue-500 text-white rounded-r hover:cursor-pointer hover:bg-blue-600">
             Search
           </button>
+          <Link
+            href="/recipes/new"
+            className="ml-2 px-4 py-2 w-m bg-green-500 text-white rounded hover:bg-green-600">
+            Add New Recipe
+          </Link>
         </form>
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {recipes.length > 0 ? (

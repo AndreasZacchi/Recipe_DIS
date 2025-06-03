@@ -17,7 +17,7 @@ export default async function NavBar() {
       </div>
       <div className="mr-4">
         <button
-          className="hover:text-white mr-4"
+          className="hover:text-white mr-4 hover:cursor-pointer"
           onClick={async () => {
             "use server";
             const cookieStore = await cookies();
